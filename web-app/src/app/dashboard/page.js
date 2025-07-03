@@ -533,7 +533,7 @@ const Dashboard = () => {
               style={{
                 fontSize: 28,
                 fontWeight: 700,
-                color: "var(--foreground)",
+                color: "white",
                 marginBottom: 24,
                 textAlign: "center",
               }}

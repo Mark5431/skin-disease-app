@@ -64,14 +64,14 @@
   left: 0;
   height: 100vh;
   width: 0; /* Start with zero width - completely hidden */
-  background: #0f172a; /* Dark blue background matching screenshot */
+  background: var(--sidebar-bg, #0f172a); /* Use CSS variable with fallback */
   display: flex;
   flex-direction: column;
   z-index: 1400; /* Higher than hamburger button to overlap it when open */
   will-change: transform, opacity, width;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--sidebar-shadow, 4px 0 15px rgba(0, 0, 0, 0.3));
 }
 
 /* Sidebar expanded state for desktop */
@@ -246,7 +246,7 @@
   display: block;
   height: 2px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--sidebar-text, rgba(255, 255, 255, 0.9));
   border-radius: 2px;
   transition: all 0.3s;
 }
@@ -256,7 +256,7 @@
   height: 1px;
   margin: 8px auto;
   width: 40px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--sidebar-separator, rgba(255, 255, 255, 0.15));
   display: none;
 }
 
@@ -298,7 +298,7 @@
   justify-content: center;
   text-align: center;
   padding: 14px 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--sidebar-text, rgba(255, 255, 255, 0.6));
   text-decoration: none;
   font-size: 0;
   font-weight: 500;
@@ -318,8 +318,8 @@
 }
 
 .navLink:hover {
-  color: rgba(255, 255, 255, 0.95);
-  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--sidebar-text-hover, rgba(255, 255, 255, 0.95));
+  background-color: var(--sidebar-hover-bg, rgba(255, 255, 255, 0.08));
 }
 
 .navLink:active {
@@ -328,7 +328,7 @@
 
 /* Active navigation link */
 .navLink.active {
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--sidebar-active-text, rgba(255, 255, 255, 0.95));
   position: relative;
 }
 
@@ -357,7 +357,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--sidebar-indicator, #fff);
   opacity: 0;
 }
 
@@ -399,7 +399,7 @@
   padding: 16px 0;
   margin-top: auto;
   font-size: 0;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--sidebar-footer-text, rgba(255, 255, 255, 0.5));
   opacity: 0.8;
   transition: opacity 0.3s;
   text-align: center;
@@ -440,8 +440,8 @@
   
   .sidebar.open {
     width: 260px;
-    background: #0f172a;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background: var(--sidebar-bg, #0f172a);
+    box-shadow: var(--sidebar-shadow-mobile, 0 0 20px rgba(0, 0, 0, 0.5));
     position: fixed;
     top: 0;
     left: 0;

@@ -27,6 +27,18 @@
   --result-card-muted: #10b981;     /* more visible muted green */
   --primary-color: #a855f7;        /* Purple for gradients */
   --sidebar-width: 280px;          /* Width of sidebar */
+  
+  /* Sidebar Variables */
+  --sidebar-bg: #f8fafc;
+  --sidebar-text: rgba(31, 41, 55, 0.8);
+  --sidebar-text-hover: rgba(31, 41, 55, 1);
+  --sidebar-hover-bg: rgba(0, 0, 0, 0.05);
+  --sidebar-active-text: var(--info-color);
+  --sidebar-separator: rgba(0, 0, 0, 0.1);
+  --sidebar-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  --sidebar-shadow-mobile: 0 0 20px rgba(0, 0, 0, 0.15);
+  --sidebar-indicator: var(--info-color);
+  --sidebar-footer-text: rgba(31, 41, 55, 0.6);
 }
 
 /* Dark Theme */
@@ -54,6 +66,18 @@
   --result-card-background: #193c1e;
   --result-card-text: #34d399;
   --result-card-muted: #134e2a;
+
+  /* Sidebar Variables - Dark Mode */
+  --sidebar-bg: #0f172a;
+  --sidebar-text: rgba(255, 255, 255, 0.6);
+  --sidebar-text-hover: rgba(255, 255, 255, 0.95);
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-active-text: rgba(255, 255, 255, 0.95);
+  --sidebar-separator: rgba(255, 255, 255, 0.15);
+  --sidebar-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+  --sidebar-shadow-mobile: 0 0 20px rgba(0, 0, 0, 0.5);
+  --sidebar-indicator: #fff;
+  --sidebar-footer-text: rgba(255, 255, 255, 0.5);
 }
 
 /* Override system preference when theme is explicitly set */
@@ -82,6 +106,18 @@
     --result-card-background: #193c1e;
     --result-card-text: #34d399;
     --result-card-muted: #134e2a;
+
+    /* Sidebar Variables - Dark Mode (System Preference) */
+    --sidebar-bg: #0f172a;
+    --sidebar-text: rgba(255, 255, 255, 0.6);
+    --sidebar-text-hover: rgba(255, 255, 255, 0.95);
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+    --sidebar-active-text: rgba(255, 255, 255, 0.95);
+    --sidebar-separator: rgba(255, 255, 255, 0.15);
+    --sidebar-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+    --sidebar-shadow-mobile: 0 0 20px rgba(0, 0, 0, 0.5);
+    --sidebar-indicator: #fff;
+    --sidebar-footer-text: rgba(255, 255, 255, 0.5);
   }
 }
 

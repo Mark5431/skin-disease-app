@@ -8,7 +8,7 @@ const fs = require('fs');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 const cors = require('cors');
 app.use(cors({
   origin: '*', // Allow all origins for testing purposes

@@ -109,7 +109,7 @@ export default function FeedbackButton({
             ) : (
               <>
                 <h3>
-                  📝 Feedback on {feature}
+                  📝 Feedback
                 </h3>
 
                 <div className={styles.formGroup}>

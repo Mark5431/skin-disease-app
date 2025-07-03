@@ -75,6 +75,11 @@
 }
 
 .feedbackModalContent {
+  --feedback-modal-bg: #fff;
+  --feedback-modal-text: #1f2937;
+  --feedback-modal-border: #d1d5db;
+  --feedback-modal-shadow: 0 8px 32px 0 rgba(251,191,36,0.25), 0 2px 8px 0 rgba(0,0,0,0.10);
+  
   background: var(--feedback-modal-bg);
   color: var(--feedback-modal-text);
   border-radius: 12px;
@@ -105,9 +110,14 @@
   padding: 8px;
   border: 1px solid var(--feedback-modal-border);
   border-radius: 6px;
-  background: transparent;
+  background: #ffffff;
   color: var(--feedback-modal-text);
   margin-bottom: 0;
+}
+
+.feedbackModalContent.darkTheme select,
+.feedbackModalContent.darkTheme textarea {
+  background: #181a20;
 }
 
 .formGroup {
@@ -130,6 +140,10 @@
   --feedback-modal-text: #f3f4f6;
   --feedback-modal-border: #374151;
   --feedback-modal-shadow: 0 8px 32px 0 rgba(59,130,246,0.18), 0 2px 8px 0 rgba(0,0,0,0.30);
+}
+
+.feedbackModalContent.darkTheme {
+  --feedback-modal-bg: #181a20;
 }
 
 .feedbackButton.darkTheme {
@@ -160,7 +174,7 @@
 .feedbackModalContent .cancelBtn {
   padding: 8px 16px;
   border: 1px solid var(--feedback-modal-border);
-  background: transparent;
+  background: var(--feedback-modal-bg);
   color: var(--feedback-modal-text);
   border-radius: 6px;
   cursor: pointer;

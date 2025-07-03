@@ -170,7 +170,7 @@ const ImageHistory = () => {
     ];
     const tableRows = filteredPredictions.map(pred => [
       pred.upload_timestamp ? new Date(pred.upload_timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '',
-      pred.predicted_class || '',
+      getFullClassName(pred) || '',
       (typeof pred.confidence_score === 'number')
         ? `${pred.confidence_score.toFixed(2)}%`
         : (pred.confidence_scores && typeof pred.confidence_scores === 'object' && pred.confidence_scores.confidence_scores && typeof pred.confidence_scores.confidence_scores === 'object')
@@ -217,6 +217,14 @@ const ImageHistory = () => {
       if (vals.length > 0) return Math.max(...vals);
     }
     return 0;
+  };
+
+  // Helper function to get the full class name from a prediction
+  const getFullClassName = (prediction) => {
+    if (prediction.lesion_type) {
+      return prediction.lesion_type;
+    }
+    return prediction.predicted_class || 'Unknown';
   };
 
   // Helper to get the full lesion name if available
@@ -1027,7 +1035,7 @@ const ImageHistory = () => {
                             }}>
                               {prediction.predicted_class.toLowerCase().includes('benign') || 
                                prediction.predicted_class.toLowerCase().includes('nevus') ? "✅" : "⚠️"} {getLesionName(prediction)}
-                            </div>
+                      </div>
                           </td>
                           <td style={{ 
                             padding: "16px", 

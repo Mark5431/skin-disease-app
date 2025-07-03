@@ -142,7 +142,7 @@ const TimelineChart = ({ predictions }) => {
   };
 
   const getPredictionLabel = (prediction) => {
-    return prediction.predicted_class || prediction.prediction || 'Unknown';
+    return prediction.lesion_name || prediction.lesion_type || prediction.full_name || prediction.predicted_class || prediction.prediction || 'Unknown';
   };
 
   const getConfidenceColor = (confidence) => {

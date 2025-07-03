@@ -348,11 +348,14 @@ const UploadImage = () => {
     }
   };
 
+  // Store webcam stream globally so we can access it in useEffect
+  const streamRef = useRef(null);
+
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoRef.current.srcObject = stream;
-      setWebcamActive(true);
+      streamRef.current = stream; // Store stream reference
+      setWebcamActive(true); // This will trigger the video element to render
     } catch (error) {
       console.error("Error accessing webcam:", error);
       alert("Unable to access webcam");
@@ -374,12 +377,27 @@ const UploadImage = () => {
   };
 
   const stopWebcam = () => {
+    // Stop tracks from stream reference first
+    if (streamRef.current) {
+      const tracks = streamRef.current.getTracks();
+      tracks.forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    // Also clean up video srcObject as a fallback
     if (videoRef.current && videoRef.current.srcObject) {
       const tracks = videoRef.current.srcObject.getTracks();
       tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
     }
     setWebcamActive(false);
   };
+
+  // Effect to set the video srcObject after the video element is rendered
+  useEffect(() => {
+    if (webcamActive && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [webcamActive]);
 
   if (loading) {
     return (

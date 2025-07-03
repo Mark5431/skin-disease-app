@@ -200,6 +200,39 @@ const ImageHistory = () => {
     doc.save('analysis-history.pdf');
   };
 
+  // Helper function to extract confidence score consistently from different data structures
+  const getConfidenceScore = (prediction) => {
+    if (typeof prediction.confidence_score === 'number') {
+      return prediction.confidence_score;
+    }
+    if (
+      prediction.confidence_scores &&
+      typeof prediction.confidence_scores === 'object' &&
+      prediction.confidence_scores.confidence_scores &&
+      typeof prediction.confidence_scores.confidence_scores === 'object'
+    ) {
+      const vals = Object.values(prediction.confidence_scores.confidence_scores)
+        .map(v => parseFloat(v))
+        .filter(v => !isNaN(v));
+      if (vals.length > 0) return Math.max(...vals);
+    }
+    return 0;
+  };
+
+  // Helper to get the full lesion name if available
+  const getLesionName = (prediction) => {
+    // First priority: direct lesion_name, lesion_type, or full_name properties
+    if (prediction.lesion_name) return prediction.lesion_name;
+    if (prediction.lesion_type) return prediction.lesion_type;
+    if (prediction.full_name) return prediction.full_name;
+    
+    // Second priority: check in confidence_scores for lesion_type
+    if (prediction.confidence_scores?.lesion_type) return prediction.confidence_scores.lesion_type;
+    
+    // Fallbacks
+    return prediction.predicted_class || prediction.prediction || 'Unknown';
+  };
+
   if (loading) {
     return (
       <div style={{ 
@@ -736,7 +769,7 @@ const ImageHistory = () => {
                           lineHeight: 1.2
                         }}
                       >
-                        {prediction.predicted_class}
+                        {getLesionName(prediction)}
                       </h3>
                       {/* Confidence Bar */}
                       <div style={{ marginBottom: 16 }}>
@@ -751,17 +784,7 @@ const ImageHistory = () => {
                                   prediction.predicted_class.toLowerCase().includes('nevus')
                               ? "var(--success-color)" : "var(--warning-color)"
                           }}>
-                            {typeof prediction.confidence_score === 'number'
-                              ? prediction.confidence_score.toFixed(2)
-                              : (prediction.confidence_scores && typeof prediction.confidence_scores === 'object' && prediction.confidence_scores.confidence_scores && typeof prediction.confidence_scores.confidence_scores === 'object')
-                                ? (() => {
-                                    const vals = Object.values(prediction.confidence_scores.confidence_scores)
-                                      .map(v => parseFloat(v))
-                                      .filter(v => !isNaN(v));
-                                    if (vals.length > 0) return Math.max(...vals).toFixed(2);
-                                    return '';
-                                  })()
-                                : ''}%
+                            {getConfidenceScore(prediction).toFixed(2)}%
                           </span>
                         </div>
                         <div style={{
@@ -772,17 +795,7 @@ const ImageHistory = () => {
                           overflow: "hidden"
                         }}>
                           <div style={{
-                            width: `${typeof prediction.confidence_score === 'number'
-                              ? prediction.confidence_score
-                              : (prediction.confidence_scores && typeof prediction.confidence_scores === 'object' && prediction.confidence_scores.confidence_scores && typeof prediction.confidence_scores.confidence_scores === 'object')
-                                ? (() => {
-                                    const vals = Object.values(prediction.confidence_scores.confidence_scores)
-                                      .map(v => parseFloat(v))
-                                      .filter(v => !isNaN(v));
-                                    if (vals.length > 0) return Math.max(...vals);
-                                    return 0;
-                                  })()
-                                : 0}%`,
+                            width: `${getConfidenceScore(prediction)}%`,
                             height: "100%",
                             background: prediction.predicted_class.toLowerCase().includes('benign') || 
                                       prediction.predicted_class.toLowerCase().includes('nevus')
@@ -1013,8 +1026,7 @@ const ImageHistory = () => {
                                 ? "var(--success-color)" : "var(--warning-color)"
                             }}>
                               {prediction.predicted_class.toLowerCase().includes('benign') || 
-                               prediction.predicted_class.toLowerCase().includes('nevus') ? "✅" : "⚠️"}
-                              {prediction.predicted_class}
+                               prediction.predicted_class.toLowerCase().includes('nevus') ? "✅" : "⚠️"} {getLesionName(prediction)}
                             </div>
                           </td>
                           <td style={{ 
@@ -1025,7 +1037,7 @@ const ImageHistory = () => {
                                   prediction.predicted_class.toLowerCase().includes('nevus')
                               ? "var(--success-color)" : "var(--warning-color)"
                           }}>
-                            {(prediction.confidence_score || 0).toFixed(2)}%
+                            {(getConfidenceScore(prediction) || 0).toFixed(2)}%
                           </td>
                           <td style={{ 
                             padding: "16px", 

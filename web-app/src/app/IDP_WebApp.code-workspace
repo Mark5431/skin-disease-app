@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../NodeMongoDB"
+		},
+		{
+			"path": "../../../../IDP2"
+		},
+		{
+			"path": "../../../../AlibabaHackathon2025"
+		},
+		{
+			"path": "../../../../MAIN_PROJECT_REPO_IDP"
+		}
+	],
+	"settings": {}
+}

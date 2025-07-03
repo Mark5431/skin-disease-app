@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* Light Theme (Default) */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --card-background: #ffffff;
+  --card-border: #e5e7eb;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border-color: #e5e7eb;
+  --hover-background: #f9fafb;
+  --input-background: #ffffff;
+  --input-border: #d1d5db;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #3b82f6;
+  --info-shadow: rgba(59, 130, 246, 0.1);
+  --result-card-background: #d1fae5; /* more contrast, less bright */
+  --result-card-text: #047857;      /* darker, more saturated green */
+  --result-card-muted: #10b981;     /* more visible muted green */
+  --primary-color: #a855f7;        /* Purple for gradients */
+  --sidebar-width: 280px;          /* Width of sidebar */
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-background: #1e293b;
+  --card-border: #334155;
+  --primary-gradient: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --hover-background: #334155;
+  --input-background: #1e293b;
+  --input-border: #475569;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --success-color: #22c55e;
+  --error-color: #f87171;
+  --warning-color: #fbbf24;
+  --info-color: #60a5fa;
+  --info-shadow: rgba(96, 165, 250, 0.2);
+  --result-card-background: #193c1e;
+  --result-card-text: #34d399;
+  --result-card-muted: #134e2a;
+}
+
+/* Override system preference when theme is explicitly set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card-background: #1e293b;
+    --card-border: #334155;
+    --primary-gradient: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --hover-background: #334155;
+    --input-background: #1e293b;
+    --input-border: #475569;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --success-color: #22c55e;
+    --error-color: #f87171;
+    --warning-color: #fbbf24;
+    --info-color: #60a5fa;
+    --info-shadow: rgba(96, 165, 250, 0.2);
+    --result-card-background: #193c1e;
+    --result-card-text: #34d399;
+    --result-card-muted: #134e2a;
+  }
+}
+
+html, body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans, sans-serif);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* App container for proper layout with sidebar */
+.app-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+/* Layout styles for sidebar and content */
+.page-content {
+  flex: 1;
+  height: 100%;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: margin-left;
+  position: relative;
+  z-index: 1;
+  padding: 0;
+  width: 100%; /* Full width - sidebar will overlay */
+  margin: 0;
+  box-sizing: border-box;
+  background: var(--background);
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling when needed */
+}
+
+/* Inner content padding */
+.page-content > * {
+  padding: 0; /* Remove default padding */
+}
+
+/* On mobile, content takes full width */
+@media (max-width: 768px) {
+  .page-content {
+    margin-left: 0;
+    width: 100% !important;
+    padding: 0; /* Remove padding */
+  }
+
+  .page-content > * {
+    padding: 0; /* Remove padding */
+  }
+}
+
+/* Page transitions animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Apply animations to main content areas */
+.page-content > * {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.page-content h1, 
+.page-content h2, 
+.page-content .card,
+.page-content .action-card {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Stagger animations for card elements */
+.page-content .card:nth-child(2) { animation-delay: 0.05s; }
+.page-content .card:nth-child(3) { animation-delay: 0.1s; }
+.page-content .card:nth-child(4) { animation-delay: 0.15s; }
+.page-content .card:nth-child(5) { animation-delay: 0.2s; }
+
+/* Mobile layout adjustments */
+@media (max-width: 768px) {
+  .page-content {
+    margin-left: 0 !important; /* Override desktop margin */
+  }
+  
+  /* When mobile header is visible, add padding to main content */
+  body.has-mobile-header main {
+    padding-top: 70px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body.has-mobile-header main {
+    padding-top: 60px !important;
+  }
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,107 @@
+/* Concise, compact, and visually distinct toast for lower left corner. */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 2000;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.13), 0 1.5px 8px rgba(0,0,0,0.10);
+  padding: 14px 22px 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+  max-width: 320px;
+  font-size: 1rem;
+  animation: fadeInUp 0.5s cubic-bezier(0.4,0,0.2,1);
+  border: none;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .toast {
+    left: 3vw;
+    right: 3vw;
+    min-width: unset;
+    max-width: 94vw;
+    width: auto;
+    padding: 10px 6px;
+  }
+}
+.icon {
+  font-size: 1.2rem;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 2px;
+  display: block;
+  color: #fff;
+}
+.text {
+  font-size: 0.97rem;
+  color: #e0e7ff;
+  line-height: 1.4;
+  margin-bottom: 0;
+  display: block;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  margin-top: 6px;
+  width: 100%;
+  justify-content: flex-start;
+}
+.accept, .dismiss {
+  display: inline-block;
+  background: #fff;
+  color: #2563eb;
+  border: none;
+  border-radius: 7px;
+  padding: 5px 14px;
+  font-weight: 600;
+  font-size: 0.97em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.2;
+  min-width: 80px;
+  height: 32px;
+}
+.accept:hover, .dismiss:hover {
+  background: #e0e7ff;
+  color: #1746b3;
+}
+.close {
+  background: none;
+  border: none;
+  color: #e0e7ff;
+  font-size: 1.1rem;
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,153 @@
+.historyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filterSelect,
+.sortSelect,
+.viewModeToggle {
+  min-width: 150px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card-background);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.cardImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cardContent {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.cardMeta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.confidenceBar {
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: var(--info-color);
+  border-radius: 4px;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* Mobile/vertical responsive styles */
+@media (max-width: 768px) {
+  .historyContainer {
+    padding: 0 16px;
+    gap: 16px;
+  }
+  
+  .filtersRow {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .searchInput,
+  .filterSelect,
+  .sortSelect,
+  .viewModeToggle {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .cardGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .historyContainer {
+    padding: 0 12px;
+    gap: 12px;
+  }
+  
+  .filtersRow {
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .cardImage {
+    height: 180px;
+  }
+  
+  .cardContent {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,651 @@
+/* Sidebar.module.css - Modern, sleek sidebar with animations */
+
+/* Animation for active nav item */
+@keyframes sidebarActiveSlide {
+  0% {
+    background: transparent;
+    opacity: 0.5;
+    transform: translateX(-8px);
+  }
+  60% {
+    background: rgba(99, 102, 241, 0.12);
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    background: rgba(99, 102, 241, 0.08);
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animations for sidebar open/close */
+@keyframes sidebarSlideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.2;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes sidebarSlideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Animation for active indicator */
+@keyframes indicatorPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Main sidebar container */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 0; /* Start with zero width - completely hidden */
+  background: #0f172a; /* Dark blue background matching screenshot */
+  display: flex;
+  flex-direction: column;
+  z-index: 1400; /* Higher than hamburger button to overlap it when open */
+  will-change: transform, opacity, width;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar expanded state for desktop */
+.sidebar.expanded {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  width: 280px; /* Wider when expanded */
+  animation: sidebarExpandWidth 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+  z-index: 1200;
+}
+
+@keyframes sidebarExpandWidth {
+  0% {
+    width: 76px;
+  }
+  100% {
+    width: 280px;
+  }
+}
+
+/* Mobile sidebar animations */
+.sidebar.open {
+  animation: sidebarSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  width: 280px; /* Wider when explicitly opened */
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar.closed {
+  animation: sidebarSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sidebar header */
+.sidebarHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 10px 20px;
+  min-height: 80px;
+  text-align: center;
+}
+
+/* Sidebar title with gradient */
+.sidebarTitle {
+  font-size: 0;
+  font-weight: 800;
+  width: 40px;
+  height: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  margin: 0 auto 10px;
+  position: relative;
+  opacity: 0.9;
+}
+
+/* Show text when sidebar is open */
+.open .sidebarTitle {
+  font-size: 1.75rem;
+  width: auto;
+  height: auto;
+  background-image: none;
+  background: linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+/* Subtle glow animation for the title */
+@keyframes titleGlow {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(124, 58, 237, 0.1));
+  }
+  100% {
+    filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.3));
+  }
+}
+
+/* Hamburger toggle button for desktop sidebar expand/collapse */
+.hamburgerToggle {
+  position: absolute;
+  top: 16px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1201;
+  box-shadow: var(--shadow-md);
+  opacity: 0.85;
+  transform: translateX(0);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+}
+
+.hamburgerToggle:hover {
+  opacity: 1;
+  transform: translateX(-4px) scale(1.05);
+}
+
+.hamburgerIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 14px;
+  height: 12px;
+  justify-content: center;
+}
+
+.hamburgerIcon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: white;
+  border-radius: 1.5px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.expanded .hamburgerToggle .hamburgerIcon span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.expanded .hamburgerToggle .hamburgerIcon span:nth-child(2) {
+  opacity: 0;
+}
+
+.expanded .hamburgerToggle .hamburgerIcon span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* Only show toggle button when sidebar is expanded on mobile */
+.open .toggleBtn {
+  display: flex;
+}
+
+.toggleBtn:hover, .toggleBtn:focus {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggleBtn:active {
+  transform: scale(0.95);
+}
+
+/* Hamburger icon */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 20px;
+  height: 14px;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Separator line */
+.separator {
+  height: 1px;
+  margin: 8px auto;
+  width: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  display: none;
+}
+
+.open .separator {
+  display: block;
+  width: 80%;
+  margin: 8px auto 16px;
+}
+
+/* Navigation list */
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.navList::-webkit-scrollbar {
+  display: none;
+}
+
+/* Navigation item */
+.navItem {
+  width: 100%;
+}
+
+/* Navigation link */
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14px 0;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0;
+  font-weight: 500;
+  transition: all 0.3s;
+  position: relative;
+  width: 100%;
+}
+
+/* Only show label text when sidebar is open */
+.open .navLink {
+  flex-direction: row;
+  text-align: left;
+  padding: 14px 16px;
+  gap: 12px;
+  justify-content: flex-start;
+  font-size: 1rem;
+}
+
+.navLink:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.navLink:active {
+  transform: scale(0.98);
+}
+
+/* Active navigation link */
+.navLink.active {
+  color: rgba(255, 255, 255, 0.95);
+  position: relative;
+}
+
+.navLink.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--info-color), var(--primary-color, #a855f7));
+}
+
+.desktop .navLink.active::before {
+  width: 3px;
+  height: 60%;
+  top: 20%;
+}
+
+/* Active indicator dot */
+.activeIndicator {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+}
+
+.open .activeIndicator {
+  opacity: 1;
+}
+
+/* Icon styles */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  transition: all 0.3s;
+  min-width: 24px;
+}
+
+.navLink:hover .icon {
+  transform: scale(1.1);
+}
+
+.navLink.active .icon {
+  color: white;
+}
+
+/* Label text */
+.label {
+  white-space: nowrap;
+  transition: all 0.3s;
+  display: none; /* Hide by default in collapsed mode */
+}
+
+.open .label {
+  display: block; /* Show when sidebar is expanded */
+}
+
+/* Footer area */
+.sidebarFooter {
+  padding: 16px 0;
+  margin-top: auto;
+  font-size: 0;
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0.8;
+  transition: opacity 0.3s;
+  text-align: center;
+  display: none; /* Hide by default in collapsed state */
+}
+
+.open .sidebarFooter {
+  padding: 20px;
+  font-size: 0.875rem;
+  display: block;
+}
+
+.sidebarFooter:hover {
+  opacity: 1;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footerContent p {
+  margin: 0;
+}
+
+.footerSubtext {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0; /* Completely hidden by default on mobile */
+    box-shadow: none;
+  }
+  
+  .sidebar.open {
+    width: 260px;
+    background: #0f172a;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1200;
+  }
+  
+  .sidebarHeader {
+    padding: 20px 16px 12px;
+    min-height: 70px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+  
+  .sidebarTitle {
+    font-size: 1.5rem;
+  }
+  
+  .toggleBtn {
+    width: 38px;
+    height: 38px;
+  }
+  
+  /* Ensure the sidebar doesn't overflow on mobile */
+  .sidebar {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for modern browsers */
+    max-height: -webkit-fill-available;
+    overflow: hidden;
+  }
+  
+  .navList {
+    padding: 0 16px;
+    overflow-y: auto;
+  }
+  
+  /* On mobile, always show labels when opened */
+  .open .navLink {
+    padding: 12px 14px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .sidebar.open {
+    width: 240px;
+  }
+  
+  .sidebarHeader {
+    padding: 16px 12px 10px;
+    min-height: 60px;
+  }
+  
+  .sidebarTitle {
+    font-size: 1.3rem;
+  }
+  
+  .toggleBtn {
+    width: 36px;
+    height: 36px;
+    top: 16px;
+    right: 8px;
+  }
+  
+  .open .navLink {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+  
+  .icon {
+    min-width: 20px;
+  }
+  
+  .open .sidebarFooter {
+    padding: 16px;
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes sidebarSlideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggleBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.toggleBtn:active {
+  transform: scale(0.95);
+}
+
+.closeIcon {
+  color: white;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hamburger button for mobile */
+.toggleBtn {
+  display: none; /* Hide in desktop mode */
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.sidebar.desktop {
+  transform: translateX(-100%); /* Hide off-screen by default */
+  opacity: 0;
+  pointer-events: none;
+  width: 76px; /* Narrow sidebar as shown in the screenshot */
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Extra small screens - ensure DermaScope text is still readable */
+@media (max-width: 380px) {
+  .sidebarTitle {
+    font-size: 1.05rem;
+    max-width: none;
+    font-weight: 700;
+    overflow: visible;
+    text-overflow: unset;
+  }
+  
+  .sidebarHeader {
+    padding: 6px 0 4px 2px;
+    gap: 6px;
+  }
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1350; /* Between hamburger and sidebar, but above most content */
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Container for positioning elements */
+.sidebarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto; /* Allow container to size based on content */
+  z-index: 1100; /* Keep below hamburger button */
+  height: 100vh;
+  pointer-events: none; /* Allow clicks to pass through the container */
+}
+
+/* Only enable pointer events for the sidebar and overlay */
+.sidebar, .overlay {
+  pointer-events: auto;
+}

@@ -1,0 +1,102 @@
+/* Hamburger button - transparent with only lines visible */
+.hamburgerButton {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1300; /* High enough for normal content, but below sidebar when it's open */
+  transition: all 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  padding: 0;
+  outline: none; /* Remove outline for better appearance */
+}
+
+.hamburgerButton:hover {
+  transform: scale(1.05);
+}
+
+.hamburgerButton:active {
+  transform: scale(0.95);
+}
+
+.hamburgerIcon {
+  width: 28px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburgerIcon span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: left center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation when active */
+.hamburgerIcon.active span:nth-child(1) {
+  transform: rotate(45deg);
+  width: 110%;
+}
+
+.hamburgerIcon.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.hamburgerIcon.active span:nth-child(3) {
+  transform: rotate(-45deg);
+  width: 110%;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  .hamburgerButton {
+    width: 46px;
+    height: 46px;
+    top: 12px;
+    left: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hamburgerButton {
+    width: 42px;
+    height: 42px;
+    top: 10px;
+    left: 10px;
+  }
+  
+  .hamburgerIcon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.hamburgerButton.hidden {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none; /* Disable interaction when hidden */
+}
+
+.hamburgerButton:hover .hamburgerIcon span {
+  background-color: var(--primary-color);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hamburgerButton:active .hamburgerIcon span {
+  width: 90%;
+}

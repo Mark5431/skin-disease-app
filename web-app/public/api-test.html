@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Summaries API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .loading { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; border: none; border-radius: 4px; cursor: pointer; }
+        .primary { background-color: #007bff; color: white; }
+        .secondary { background-color: #6c757d; color: white; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .test-form { margin: 10px 0; }
+        input[type="text"] { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 LLM Summaries API Integration Test</h1>
+        
+        <div class="section">
+            <h2>Test Backend API Endpoint</h2>
+            <div class="test-form">
+                <input type="text" id="userIdInput" placeholder="Enter User ID (e.g., test_user_123)" value="test_user_123">
+                <button class="primary" onclick="testBackendAPI()">Test Backend API</button>
+                <button class="secondary" onclick="testFrontendAPI()">Test Frontend API</button>
+            </div>
+        </div>
+
+        <div id="backendResult" class="section" style="display: none;">
+            <h3>Backend API Result:</h3>
+            <pre id="backendOutput"></pre>
+        </div>
+
+        <div id="frontendResult" class="section" style="display: none;">
+            <h3>Frontend API Result:</h3>
+            <pre id="frontendOutput"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Instructions:</h2>
+            <ol>
+                <li>Make sure both servers are running:
+                    <ul>
+                        <li>Backend: <code>node test_mongodb.js</code> (port 4000)</li>
+                        <li>Frontend: <code>npm run dev</code> (port 3000)</li>
+                    </ul>
+                </li>
+                <li>Click "Test Backend API" to check direct MongoDB connection</li>
+                <li>Click "Test Frontend API" to check Next.js API route</li>
+                <li>Check browser console for additional debug info</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function testBackendAPI() {
+            const userId = document.getElementById('userIdInput').value;
+            const resultDiv = document.getElementById('backendResult');
+            const outputElement = document.getElementById('backendOutput');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'section loading';
+            outputElement.textContent = 'Testing backend API...';
+            
+            try {
+                console.log('Testing backend API directly...');
+                const response = await fetch(`http://localhost:4000/api/llm-summaries?userId=${userId}&limit=5`);
+                
+                if (!response.ok) {
+                    throw new Error(`Backend API responded with status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Backend API response:', data);
+                
+                resultDiv.className = 'section success';
+                outputElement.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                console.error('Backend API error:', error);
+                resultDiv.className = 'section error';
+                outputElement.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testFrontendAPI() {
+            const userId = document.getElementById('userIdInput').value;
+            const resultDiv = document.getElementById('frontendResult');
+            const outputElement = document.getElementById('frontendOutput');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'section loading';
+            outputElement.textContent = 'Testing frontend API...';
+            
+            try {
+                console.log('Testing frontend API route...');
+                const response = await fetch(`/api/llm-summaries?userId=${userId}&limit=5&timeRange=30d`);
+                
+                if (!response.ok) {
+                    throw new Error(`Frontend API responded with status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Frontend API response:', data);
+                
+                resultDiv.className = 'section success';
+                outputElement.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                console.error('Frontend API error:', error);
+                resultDiv.className = 'section error';
+                outputElement.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            console.log('LLM Summaries API Test Page loaded');
+            console.log('Backend should be running on: http://localhost:4000');
+            console.log('Frontend should be running on: http://localhost:3000');
+        });
+    </script>
+</body>
+</html>

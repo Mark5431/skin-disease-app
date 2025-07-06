@@ -16,7 +16,7 @@ export default function MobileHeader() {
   return (
     <header className={styles.mobileHeader}>
       <div className={styles.logoContainer}>
-        <h1 className={styles.logo}>DermaCare</h1>
+        <h1 className={styles.logo}>DermaScope</h1>
       </div>
       
       <div className={styles.actions}>

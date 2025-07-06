@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "DermaCare - AI-powered Skin Analysis",
+  title: "DermaScope - AI-powered Skin Analysis",
   description: "Advanced skin disease detection and analysis powered by AI",
 };
 

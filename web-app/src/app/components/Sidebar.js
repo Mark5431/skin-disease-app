@@ -89,7 +89,7 @@ export default function Sidebar() {
           >
             <span className={styles.closeIcon}>×</span>
           </button>
-          <h1 className={styles.sidebarTitle}>DermaCare</h1>
+          <h1 className={styles.sidebarTitle}>DermaScope</h1>
         </div>
         
         <div className={styles.separator}></div>
@@ -122,7 +122,7 @@ export default function Sidebar() {
         
         <div className={styles.sidebarFooter}>
           <div className={styles.footerContent}>
-            <p>DermaCare v2.0</p>
+            <p>DermaScope v2.0</p>
             <p className={styles.footerSubtext}>AI-powered skin analysis</p>
           </div>
         </div>

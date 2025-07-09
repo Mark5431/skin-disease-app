@@ -62,12 +62,6 @@
     width: 100%;
     box-sizing: border-box;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-/* Improved mobile stacking and sizing for upload page */
-@media (max-width: 768px) {
-  html, body, #__next, .settingsContainer, .upload-header {
-    overflow-x: hidden !important;
-  }
 }
 /* Mobile responsiveness for upload page */
 @media (max-width: 768px) {

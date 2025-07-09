@@ -1,3 +1,80 @@
+@media (max-width: 480px) {
+  .dashboard-header .dashboard-header-mobile-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+  .dashboard-header .dashboard-header-mobile-row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+  }
+  .dashboard-header .dashboard-header-mobile-actions {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .dashboard-header h1 {
+    font-size: 20px !important;
+    margin-bottom: 0 !important;
+    line-height: 1.1 !important;
+  }
+  .dashboard-header p {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+  }
+}
+@media (max-width: 480px) {
+  .upload-header {
+    padding: 10px 0 !important;
+  }
+  .upload-header h1 {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+    line-height: 1.1 !important;
+  }
+  .upload-header p {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+  }
+  .upload-header .backLink {
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    margin-bottom: 0 !important;
+  }
+  .upload-header .ThemeToggle {
+    transform: scale(0.85);
+  }
+  .upload-header > div {
+    gap: 8px !important;
+  }
+}
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 10px 0 !important;
+  }
+  .dashboard-header h1 {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+  }
+  .dashboard-header p {
+    font-size: 13px !important;
+  }
+  .dashboard-header .interactive-button,
+  .dashboard-header button {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    border-radius: 10px !important;
+    gap: 4px !important;
+  }
+}
 @import "tailwindcss";
 
 /* Light Theme (Default) */
@@ -246,5 +323,15 @@ html, body {
   * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .settingsContainer,
+  .upload-header {
+    overflow-x: hidden !important;
+  }
+  html, body, #__next {
+    overflow-x: hidden !important;
   }
 }

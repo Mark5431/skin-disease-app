@@ -16,5 +16,7 @@
 			"path": "../../../../MAIN_PROJECT_REPO_IDP"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "IDP_WebApp"
+	}
 }

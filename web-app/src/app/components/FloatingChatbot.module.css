@@ -8,6 +8,33 @@
   font-family: inherit;
 }
 
+@media (max-width: 480px) {
+  .chatbotContainer {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    z-index: 2000;
+    display: block;
+    background: none;
+    pointer-events: none;
+  }
+  .floatingButton {
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    z-index: 2100;
+    pointer-events: auto;
+  }
+  .chatWindow.open {
+    pointer-events: auto;
+  }
+}
+
 .floatingButton {
   width: 60px;
   height: 60px;

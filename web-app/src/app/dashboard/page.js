@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "../utils/auth";
-
 import ThemeToggle from "../components/ThemeToggle";
 import FeedbackButton from "../components/FeedbackButton";
 import ProactivePromptToast from "../components/ProactivePromptToast";
+import useIsMobile from "../hooks/useIsMobile";
 
 const Dashboard = () => {
+  const isMobile = useIsMobile(480);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -30,12 +31,10 @@ const Dashboard = () => {
         router.push("/login");
         return;
       }
-
       // Get user data
       const userData = auth.getCurrentUser();
       setUser(userData);
       setLoading(false);
-      
       // Trigger entrance animation
       setTimeout(() => setIsVisible(true), 100);
     } catch (error) {
@@ -53,8 +52,6 @@ const Dashboard = () => {
         console.log("Dashboard: No user ID available, skipping predictions fetch");
         return;
       }
-      
-      console.log("Dashboard: Fetching predictions for user:", user.userId);
       setLoadingPredictions(true);
       try {
         const response = await fetch(`${nodeApiBase}/get-user-predictions`, {
@@ -62,42 +59,27 @@ const Dashboard = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user_id: user.userId }),
         });
-
-        console.log("Dashboard: API response status:", response.status);
-        
         if (response.ok) {
           const data = await response.json();
-          console.log("Dashboard: Received predictions data:", data);
           // Get the 5 most recent predictions
           const recentPredictions = data.predictions.slice(0, 5);
-          console.log("Dashboard: Setting recent predictions:", recentPredictions);
           setRecentPredictions(recentPredictions);
         } else {
-          console.error("Dashboard: Failed to fetch predictions, status:", response.status);
-          const errorText = await response.text();
-          console.error("Dashboard: Error response:", errorText);
           setRecentPredictions([]);
         }
-      } catch (error) {
-        console.error("Dashboard: Error fetching predictions:", error);
+      } catch (err) {
         setRecentPredictions([]);
       } finally {
         setLoadingPredictions(false);
-        console.log("Dashboard: Finished loading predictions");
       }
     };
-
-    if (user?.userId) {
-      fetchRecentPredictions();
-    }
+    if (user) fetchRecentPredictions();
   }, [user, nodeApiBase]);
 
   const handleLogout = () => {
     try {
       auth.logout();
     } catch (error) {
-      console.error("Error during logout:", error);
-      // Force logout by clearing localStorage and redirecting
       if (typeof window !== 'undefined') {
         localStorage.clear();
         window.location.href = '/login';
@@ -402,6 +384,15 @@ const Dashboard = () => {
         .prediction-card:nth-child(5) {
           animation-delay: 0.4s;
         }
+
+        .dashboard-header-mobile-stack { display: flex; flex-direction: column; gap: 8px; }
+        .dashboard-header-mobile-row { width: 100%; }
+        .dashboard-header-mobile-actions { display: flex; gap: 12px; margin-top: 8px; }
+        .mobileHeaderButton, .mobileLogoutButton { background: var(--card-background); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .mobileLogoutButton { color: var(--error-color); border-color: var(--error-color); }
+        .mobileHeaderButton:active, .mobileLogoutButton:active { background: var(--hover-background); }
+        .dashboard-header-desktop .interactive-button { margin-left: 8px; }
+        .gradient-text { background: linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
       `}</style>
 
       <div
@@ -415,114 +406,131 @@ const Dashboard = () => {
         }}
       >
         {/* Header */}
-        <header
-          className="glass-card"
-          style={{
-            background: "var(--card-background)",
-            backdropFilter: "blur(20px)",
-            boxShadow: "var(--shadow-lg)",
-            padding: "24px 0",
-            borderBottom: "1px solid var(--border-color)",
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: "0 auto",
-              padding: "0 20px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <h1
-                className="gradient-text"
-                style={{
-                  fontSize: 32,
-                  fontWeight: 700,
-                  margin: 0,
-                  marginBottom: 4,
-                }}
-              >
-                Welcome, {user?.username}! 👋
-              </h1>
-              <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
-                Ready to analyze medical images with AI
-              </p>
+        <header className="glass-card dashboard-header" style={{
+          background: "var(--card-background)",
+          backdropFilter: "blur(20px)",
+          boxShadow: "var(--shadow-lg)",
+          padding: "24px 0",
+          borderBottom: "1px solid var(--border-color)"
+        }}>
+          {isMobile ? (
+            <div className="dashboard-header-mobile-stack" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", width: "100%" }}>
+              {/* Row 1: Welcome */}
+              <div className="dashboard-header-mobile-row" style={{ width: "100%" }}>
+                <h1 className="gradient-text" style={{ fontSize: 32, fontWeight: 700, margin: 0, marginBottom: 4 }}>
+                  Welcome, {user?.username}! 👋
+                </h1>
+              </div>
+              {/* Row 2: Subtitle */}
+              <div className="dashboard-header-mobile-row" style={{ width: "100%" }}>
+                <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
+                  Ready to analyze medical images with AI
+                </p>
+              </div>
+              {/* Row 3: Actions */}
+              <div className="dashboard-header-mobile-actions">
+                <ThemeToggle />
+                <button
+                  onClick={() => router.push("/settings")}
+                  className="mobileHeaderButton"
+                  type="button"
+                >
+                  <span style={{ fontSize: "16px" }}>⚙️</span>
+                  <span className="buttonText">Settings</span>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="mobileLogoutButton"
+                  type="button"
+                >
+                  <span style={{ fontSize: "16px" }}>🔚</span>
+                  <span className="buttonText">Logout</span>
+                </button>
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              <ThemeToggle />
-              <button
-                onClick={() => router.push("/settings")}
-                className="interactive-button"
-                style={{
-                  background: "var(--card-background)",
-                  color: "var(--text-primary)",
-                  border: "1px solid var(--border-color)",
-                  padding: "12px 20px",
-                  borderRadius: 16,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  backdropFilter: "blur(20px)",
-                  boxShadow: "var(--shadow-sm)",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "var(--hover-background)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "var(--shadow-md)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "var(--card-background)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "var(--shadow-sm)";
-                }}
-              >
-                <span style={{ fontSize: "16px" }}>⚙️</span>
-                Settings
-              </button>
-              <button
-                onClick={handleLogout}
-                className="interactive-button"
-                style={{
-                  background: "var(--card-background)",
-                  color: "var(--error-color)",
-                  border: "1px solid var(--error-color)",
-                  padding: "12px 20px",
-                  borderRadius: 16,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  backdropFilter: "blur(20px)",
-                  boxShadow: "var(--shadow-sm)",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "var(--error-color)";
-                  e.target.style.color = "white";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "var(--shadow-md)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "var(--card-background)";
-                  e.target.style.color = "var(--error-color)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "var(--shadow-sm)";
-                }}
-              >
-                <span style={{ fontSize: "16px" }}>🚪</span>
-                Logout
-              </button>
+          ) : (
+            <div className="dashboard-header-desktop" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1200, margin: "0 auto", padding: "0 20px", width: "100%" }}>
+              <div>
+                <h1 className="gradient-text" style={{ fontSize: 32, fontWeight: 700, margin: 0, marginBottom: 4 }}>
+                  Welcome, {user?.username}! 👋
+                </h1>
+                <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
+                  Ready to analyze medical images with AI
+                </p>
+              </div>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <ThemeToggle />
+                <button
+                  onClick={() => router.push("/settings")}
+                  className="interactive-button"
+                  style={{
+                    background: "var(--card-background)",
+                    color: "var(--text-primary)",
+                    border: "1px solid var(--border-color)",
+                    padding: "12px 20px",
+                    borderRadius: 16,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    backdropFilter: "blur(20px)",
+                    boxShadow: "var(--shadow-sm)",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "var(--hover-background)";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow = "var(--shadow-md)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "var(--card-background)";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow = "var(--shadow-sm)";
+                  }}
+                >
+                  <span style={{ fontSize: "16px" }}>⚙️</span>
+                  Settings
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="interactive-button"
+                  style={{
+                    background: "var(--card-background)",
+                    color: "var(--error-color)",
+                    border: "1px solid var(--error-color)",
+                    padding: "12px 20px",
+                    borderRadius: 16,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    backdropFilter: "blur(20px)",
+                    boxShadow: "var(--shadow-sm)" ,
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "var(--error-color)";
+                    e.target.style.color = "white";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow = "var(--shadow-md)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "var(--card-background)";
+                    e.target.style.color = "var(--error-color)";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow = "var(--shadow-sm)";
+                  }}
+                >
+                  <span style={{ fontSize: "16px" }}>🔚</span>
+                  Logout
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </header>
 
         {/* Main Content */}

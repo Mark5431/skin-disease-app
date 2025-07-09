@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { auth } from "../utils/auth";
 import ThemeToggle from "../components/ThemeToggle";
+import useIsMobile from "../hooks/useIsMobile";
 import styles from "./Settings.module.css";
 
 export default function Settings() {
+  const isMobile = useIsMobile(768);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -105,17 +107,21 @@ export default function Settings() {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
-            <Link href="/dashboard" className={styles.backLink}>
-              ← Back to Dashboard
-            </Link>
+            {!isMobile && (
+              <Link href="/dashboard" className={styles.backLink}>
+                ← Back to Dashboard
+              </Link>
+            )}
             <h1>⚙️ Account Settings</h1>
             <p>Manage your profile and account preferences</p>
           </div>
           <div className={styles.headerRight}>
-            <ThemeToggle />
-            <button onClick={handleLogout} className={styles.logoutButton}>
-              🚪 Logout
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+              <ThemeToggle />
+              <button onClick={handleLogout} className={styles.logoutButton}>
+                🚪 Logout
+              </button>
+            </div>
           </div>
         </div>
       </header>

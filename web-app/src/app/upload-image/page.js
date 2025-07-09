@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "../utils/auth";
 import ThemeToggle from "../components/ThemeToggle";
+import useIsMobile from "../hooks/useIsMobile";
 import GradcamViewer from "../components/GradcamViewer";
 import { useRouter } from "next/navigation";
 import styles from "./Upload.module.css";
@@ -115,6 +116,7 @@ function ZoomModal({ src, alt, onClose }) {
 }
 
 const UploadImage = () => {
+  const isMobile = useIsMobile(480);
   const [file, setFile] = useState(null);
   const [zoomModalOpen, setZoomModalOpen] = useState(false);
   const [notes, setNotes] = useState("");
@@ -502,7 +504,7 @@ const UploadImage = () => {
         }
       `}</style>
 
-      <div style={{
+      <div className={styles.uploadPageContainer} style={{
         minHeight: "100vh",
         background: "var(--primary-gradient)",
         fontFamily: "var(--font-geist-sans, sans-serif)",
@@ -511,63 +513,82 @@ const UploadImage = () => {
         transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
       }}>
         {/* Header */}
-        <header style={{
+        <header className="upload-header" style={{
           background: "var(--card-background)",
           backdropFilter: "blur(20px)",
           boxShadow: "var(--shadow-lg)",
           padding: "24px 0",
-          borderBottom: "1px solid var(--border-color)",
+          borderBottom: "1px solid var(--border-color)"
         }}>
-          <div style={{
-            maxWidth: 1200,
-            margin: "0 auto",
-            padding: "0 20px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
-            <div>
-              <h1 style={{
-                fontSize: 32,
-                fontWeight: 700,
-                margin: 0,
-                marginBottom: 4,
-                background: "linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                📤 Upload & Analyze
-              </h1>
-              <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
-                Upload medical images for AI-powered analysis
-              </p>
+          {isMobile ? (
+            <div className="dashboard-header-mobile-stack" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", width: "100%" }}>
+              {/* Row 1: Title */}
+              <div className="dashboard-header-mobile-row" style={{ width: "100%" }}>
+                <h1 style={{
+                  fontSize: 32,
+                  fontWeight: 700,
+                  margin: 0,
+                  marginBottom: 4,
+                  background: "linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>
+                  📤 Upload & Analyze
+                </h1>
+              </div>
+              {/* Row 2: Subtitle */}
+              <div className="dashboard-header-mobile-row" style={{ width: "100%" }}>
+                <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
+                  Upload medical images for AI-powered analysis
+                </p>
+              </div>
+              {/* Row 3: Actions */}
+              <div className="dashboard-header-mobile-actions">
+                <ThemeToggle />
+              </div>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <Link href="/dashboard" className={styles.backLink}>
-                ← Back to Dashboard
-              </Link>
-              <ThemeToggle />
+          ) : (
+            <div style={{
+              maxWidth: 1200,
+              margin: "0 auto",
+              padding: "0 20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
+              <div>
+                <h1 style={{
+                  fontSize: 32,
+                  fontWeight: 700,
+                  margin: 0,
+                  marginBottom: 4,
+                  background: "linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>
+                  📤 Upload & Analyze
+                </h1>
+                <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
+                  Upload medical images for AI-powered analysis
+                </p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <Link href="/dashboard" className={styles.backLink}>
+                  ← Back to Dashboard
+                </Link>
+                <ThemeToggle />
+              </div>
             </div>
-          </div>
+          )}
         </header>
 
         {/* Main Content */}
         <main style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 20px" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "40px",
-            alignItems: "start"
-          }}>
+          <div className={styles.uploadMainGrid}>
             {/* Upload Section */}
-            <div className="fade-in-up" style={{
-              background: "var(--card-background)",
-              borderRadius: 24,
-              padding: 40,
-              boxShadow: "var(--shadow-lg)",
-              border: "1px solid var(--card-border)"
-            }}>
+            <div className={`fade-in-up ${styles.uploadSection}`}>
               <h2 style={{
                 fontSize: 24,
                 fontWeight: 700,
@@ -591,15 +612,15 @@ const UploadImage = () => {
                 }} onClick={() => document.getElementById('fileInput').click()}>
                   {imageUrl ? (
                     <div>
-                      <div style={{
+                      <div className={styles.imagePreview} style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         width: "100%",
-                        margin: "0 auto 16px",
-                        borderRadius: "12px",
+                        margin: "0 auto 12px",
+                        borderRadius: "10px",
                         overflow: "hidden",
-                        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+                        boxShadow: "var(--shadow-md)",
                         background: "var(--input-background)",
                         maxWidth: "180px",
                         maxHeight: "180px",
@@ -618,7 +639,7 @@ const UploadImage = () => {
                             width: "auto",
                             height: "auto",
                             objectFit: "contain",
-                            borderRadius: "12px",
+                            borderRadius: "10px",
                             background: "var(--input-background)"
                           }}
                         />
@@ -634,8 +655,8 @@ const UploadImage = () => {
                             color: "#fff",
                             border: "none",
                             borderRadius: "50%",
-                            width: 36,
-                            height: 36,
+                            width: 32,
+                            height: 32,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -645,17 +666,17 @@ const UploadImage = () => {
                           }}
                           title="Zoom image"
                         >
-                          <span style={{ fontSize: 20 }}>🔍</span>
+                          <span style={{ fontSize: 18 }}>🔍</span>
                         </button>
                       </div>
-                      <p style={{ color: "var(--success-color)", fontWeight: 600 }}>
+                      <p style={{ color: "var(--success-color)", fontWeight: 600, fontSize: 14, marginTop: 6 }}>
                         ✅ Image selected successfully
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <div style={{ fontSize: "60px", marginBottom: "16px" }}>📁</div>
-                      <p style={{ color: "var(--text-primary)", fontSize: "18px", fontWeight: 500 }}>
+                      <div style={{ fontSize: "48px", marginBottom: "12px" }}>📁</div>
+                      <p style={{ color: "var(--text-primary)", fontSize: "15px", fontWeight: 500 }}>
                         Click to browse or drag & drop image
                       </p>
                       <p style={{ color: "var(--text-secondary)", fontSize: "14px", marginTop: "8px" }}>

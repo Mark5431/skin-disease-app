@@ -1,5 +1,5 @@
 "use client";
-
+import useIsMobile from "../hooks/useIsMobile";
 import React, { useEffect, useState } from "react";
 import ImageZoomModal from "./ImageZoomModal";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,7 @@ const TimelineChart = dynamic(() => import('../components/TimelineChart'), {
 });
 
 const ImageHistory = () => {
+  const isMobile = useIsMobile(480);
   const [zoomedImage, setZoomedImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [predictions, setPredictions] = useState([]);
@@ -303,46 +304,70 @@ const ImageHistory = () => {
             backdropFilter: "blur(20px)",
             boxShadow: "var(--shadow-lg)",
             padding: "24px 0",
-            borderBottom: "1px solid var(--border-color)",
+            borderBottom: "1px solid var(--border-color)"
           }}
         >
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: "0 auto",
-              padding: "0 20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              <Link
-                href="/dashboard"
-                style={{
-                  textDecoration: "none",
-                  fontSize: 18,
-                  color: "var(--info-color)",
-                }}
-              >
-                ← Back to Dashboard
-              </Link>
-              <h1
-                style={{
-                  fontSize: "32px",
+          {isMobile ? (
+            <div className="dashboard-header-mobile-stack" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", width: "100%" }}>
+              {/* Row 1: Title */}
+              <div className="dashboard-header-mobile-row" style={{ width: "100%" }}>
+                <h1 style={{
+                  fontSize: 32,
                   fontWeight: 700,
-                  margin: "0 0 4px 0",
+                  margin: 0,
+                  marginBottom: 4,
                   background: "linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7))",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                }}
-              >
-                📊 Analysis History
-              </h1>
+                }}>
+                  📊 Analysis History
+                </h1>
+              </div>
+              {/* Row 2: Actions */}
+              <div className="dashboard-header-mobile-actions">
+                <ThemeToggle />
+              </div>
             </div>
-            <ThemeToggle />
-          </div>
+          ) : (
+            <div
+              style={{
+                maxWidth: 1200,
+                margin: "0 auto",
+                padding: "0 20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <Link
+                  href="/dashboard"
+                  style={{
+                    textDecoration: "none",
+                    fontSize: 18,
+                    color: "var(--info-color)",
+                  }}
+                >
+                  ← Back to Dashboard
+                </Link>
+                <h1
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: 700,
+                    margin: "0 0 4px 0",
+                    background: "linear-gradient(90deg, var(--info-color), var(--primary-color, #a855f7))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  📊 Analysis History
+                </h1>
+              </div>
+              <ThemeToggle />
+            </div>
+          )}
         </header>
 
         {/* Confidence Trend Chart */}

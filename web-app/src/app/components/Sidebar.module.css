@@ -436,6 +436,7 @@
   .sidebar {
     width: 0; /* Completely hidden by default on mobile */
     box-shadow: none;
+    z-index: 1401; /* Ensure sidebar is above overlay on mobile */
   }
   
   .sidebar.open {
@@ -446,7 +447,7 @@
     top: 0;
     left: 0;
     height: 100vh;
-    z-index: 1200;
+    z-index: 1401; /* Ensure sidebar is above overlay on mobile */
   }
   
   .sidebarHeader {

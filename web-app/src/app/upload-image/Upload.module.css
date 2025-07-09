@@ -1,3 +1,120 @@
+@media (max-width: 480px) {
+  .uploadMainGrid {
+    padding: 0 2vw 40px 2vw !important;
+    gap: 12px !important;
+  }
+  .uploadSection {
+    padding: 10px 2vw !important;
+    border-radius: 10px !important;
+    max-width: 98vw !important;
+  }
+  .upload-zone {
+    padding: 10px 2vw !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+  }
+  .uploadSection h2 {
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+  }
+  .uploadSection button,
+  .uploadSection input[type="file"],
+  .uploadSection textarea {
+    font-size: 14px !important;
+    min-height: 38px !important;
+    margin-bottom: 6px !important;
+  }
+  .imagePreview {
+    max-width: 96vw !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+}
+@media (max-width: 768px) {
+  .uploadPageContainer {
+    width: 100vw !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+.uploadMainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px 60px 20px;
+}
+  .uploadSection {
+    background: var(--card-background);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--card-border);
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+/* Improved mobile stacking and sizing for upload page */
+@media (max-width: 768px) {
+  html, body, #__next, .settingsContainer, .upload-header {
+    overflow-x: hidden !important;
+  }
+}
+/* Mobile responsiveness for upload page */
+@media (max-width: 768px) {
+  .uploadMainGrid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 0 4vw 60px 4vw !important;
+    width: 100vw !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .uploadSection {
+    padding: 18px 8px !important;
+    border-radius: 14px !important;
+    box-shadow: var(--shadow-md) !important;
+  }
+  .upload-zone {
+    padding: 18px 8px !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    margin-bottom: 16px !important;
+  }
+  .uploadSection h2 {
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
+  }
+  .uploadSection button,
+  .uploadSection input[type="file"],
+  .uploadSection textarea {
+    width: 100% !important;
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+    min-height: 44px !important;
+  }
+  .imagePreview {
+    max-width: 100vw !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 12px !important;
+    border-radius: 10px !important;
+  }
+}
 .backLink {
   text-decoration: none;
   font-size: 16px;
